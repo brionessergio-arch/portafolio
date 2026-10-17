@@ -1,0 +1,40 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const formatDate = (d: Date) => d.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+<Layout title="Blog | Sergio Briones" description="Artículos sobre cloud, DevOps, ciberseguridad y tecnología.">
+  <Header />
+  <section class="section" style="padding-top: 7rem;">
+    <div class="container">
+      <h1 class="section-title">Blog</h1>
+      <p class="section-subtitle">Artículos, tutoriales y reflexiones sobre el mundo de las Tecnologías de la Información</p>
+      {posts.length === 0 ? (
+        <p style="color: var(--text-muted);">No hay artículos publicados todavía. ¡Vuelve pronto!</p>
+      ) : (
+        <div class="blog-grid">
+          {posts.map(post => (
+            <a href={`/blog/${post.slug}`} class="blog-card">
+              <div class="blog-card-body">
+                <div class="blog-date">{formatDate(post.data.pubDate)}</div>
+                <h3>{post.data.title}</h3>
+                <p>{post.data.description}</p>
+                <div class="blog-tags">
+                  {post.data.tags.map(t => <span class="blog-tag">{t}</span>)}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+  <Footer />
+</Layout>

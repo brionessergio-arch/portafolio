@@ -1,16 +1,156 @@
 ---
----
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+).slice(0, 3);
+
+const projects = [
+  { title: 'Dashboard de Monitoreo Cloud', description: 'Panel de monitoreo de infraestructura con métricas en tiempo real usando Cloudflare Workers y D1.', tag: 'Cloudflare Workers', url: '#', external: false },
+  { title: 'App de Gestión de Tareas', description: 'Aplicación fullstack construida con Lovable para gestión de proyectos y equipos distribuidos.', tag: 'Lovable', url: 'https://lovable.dev', external: true },
+  { title: 'API de Automatización DevOps', description: 'API REST para automatizar pipelines CI/CD con integración a múltiples proveedores cloud.', tag: 'DevOps', url: '#', external: false },
+];
+
+const skills = [
+  { icon: '☁️', name: 'Cloud & Arquitectura', desc: 'AWS, Cloudflare, GCP' },
+  { icon: '🔧', name: 'DevOps & CI/CD', desc: 'Docker, Kubernetes, GitHub Actions' },
+  { icon: '💻', name: 'Desarrollo Full-Stack', desc: 'TypeScript, Python, Go' },
+  { icon: '🛡️', name: 'Ciberseguridad', desc: 'WAF, Zero Trust, Hardening' },
+  { icon: '📊', name: 'Data & Analytics', desc: 'SQL, BigQuery, Dashboards' },
+  { icon: '🤖', name: 'IA & Automatización', desc: 'LLMs, RAG, Workflows' },
+];
+
+const stats = [
+  { num: '8+', label: 'Años de experiencia' },
+  { num: '50+', label: 'Proyectos entregados' },
+  { num: '15+', label: 'Tecnologías dominadas' },
+  { num: '99.9%', label: 'Uptime garantizado' },
+];
+
+const formatDate = (d: Date) => d.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+<Layout>
+  <Header />
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge fade-in">
+        <span class="dot"></span>
+        Disponible para nuevos proyectos
+      </div>
+      <h1 class="fade-in-delay-1">
+        Hola, soy <span class="gradient">Sergio Briones</span><br />
+        Profesional de Tecnologías de la Información
+      </h1>
+      <p class="fade-in-delay-2">
+        Especialista en arquitectura cloud, automatización DevOps y ciberseguridad.
+        Transformo ideas en soluciones tecnológicas escalables, seguras y eficientes.
+      </p>
+      <div class="hero-cta fade-in-delay-3">
+        <a href="/#proyectos" class="btn btn-primary">Ver proyectos →</a>
+        <a href="/blog" class="btn btn-outline">Leer el blog</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="stats">
+        {stats.map(s => (
+          <div class="stat">
+            <div class="stat-num">{s.num}</div>
+            <div class="stat-label">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="sobre-mi">
+    <div class="container">
+      <h2 class="section-title">Sobre mí</h2>
+      <p class="section-subtitle">Conoce mi trayectoria y experiencia profesional</p>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>Soy un profesional de TI con más de 8 años de experiencia diseñando, implementando y manteniendo infraestructuras tecnológicas para empresas de diversos sectores.</p>
+          <p>Mi enfoque se centra en crear soluciones que combinan <strong>rendimiento</strong>, <strong>seguridad</strong> y <strong>escalabilidad</strong>. Trabajo con arquitecturas cloud-native, automatización de procesos y mejores prácticas de la industria.</p>
+          <p>Apasionado por la innovación, comparto conocimiento a través de mi blog y colaboro en proyectos open source. Siempre buscando nuevos retos que me permitan crecer profesionalmente y aportar valor real a las organizaciones.</p>
+        </div>
+        <div class="skills-grid">
+          {skills.map(s => (
+            <div class="skill-card">
+              <div class="skill-icon">{s.icon}</div>
+              <h4>{s.name}</h4>
+              <p>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="proyectos" style="background: rgba(17, 24, 39, .3);">
+    <div class="container">
+      <h2 class="section-title">Proyectos destacados</h2>
+      <p class="section-subtitle">Una selección de proyectos en los que he trabajado</p>
+      <div class="projects-grid">
+        {projects.map(p => (
+          <div class="project-card">
+            <span class="project-tag">{p.tag}</span>
+            <h3>{p.title}</h3>
+            <p>{p.description}</p>
+            <div class="project-links">
+              <a href={p.url} target={p.external ? '_blank' : '_self'} rel={p.external ? 'noopener noreferrer' : ''}>
+                {p.external ? '🔗 Ver proyecto externo' : '🔍 Ver detalles'} →
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style="text-align: center; margin-top: 2.5rem;">
+        <a href="/proyectos" class="btn btn-outline">Ver todos los proyectos →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Últimos artículos</h2>
+      <p class="section-subtitle">Comparto conocimientos sobre tecnología, cloud y automatización</p>
+      <div class="blog-grid">
+        {posts.map(post => (
+          <a href={`/blog/${post.slug}`} class="blog-card">
+            <div class="blog-card-body">
+              <div class="blog-date">{formatDate(post.data.pubDate)}</div>
+              <h3>{post.data.title}</h3>
+              <p>{post.data.description}</p>
+              <div class="blog-tags">
+                {post.data.tags.map(t => <span class="blog-tag">{t}</span>)}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div style="text-align: center; margin-top: 2.5rem;">
+        <a href="/blog" class="btn btn-outline">Ver todos los artículos →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contacto" style="background: rgba(17, 24, 39, .3);">
+    <div class="container contact">
+      <h2 class="section-title">¿Trabajamos juntos?</h2>
+      <p class="section-subtitle">Estoy disponible para proyectos freelance, consultoría y colaboraciones</p>
+      <div class="contact-links">
+        <a href="mailto:briones.sergio@gmail.com" class="contact-link">✉️ Email</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="contact-link">💼 LinkedIn</a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="contact-link">🐙 GitHub</a>
+        <a href="https://lovable.dev" target="_blank" rel="noopener noreferrer" class="contact-link">🚀 Lovable</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

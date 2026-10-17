@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const projects = [
+  { title: 'Dashboard de Monitoreo Cloud', description: 'Panel de monitoreo de infraestructura con métricas en tiempo real. Construido con Cloudflare Workers, D1 y KV para visualizar el estado de servicios distribuidos globalmente.', tag: 'Cloudflare Workers', tech: ['Cloudflare Workers', 'D1', 'KV', 'Chart.js'], url: '#', external: false },
+  { title: 'App de Gestión de Tareas', description: 'Aplicación fullstack para gestión de proyectos y equipos distribuidos. Desarrollada con Lovable, incluye autenticación, notificaciones y colaboración en tiempo real.', tag: 'Lovable', tech: ['Lovable', 'React', 'Supabase'], url: 'https://lovable.dev', external: true },
+  { title: 'API de Automatización DevOps', description: 'API REST que automatiza pipelines CI/CD. Integra múltiples proveedores cloud y permite orquestar despliegues con un solo endpoint.', tag: 'DevOps', tech: ['Go', 'Docker', 'Kubernetes', 'GitHub Actions'], url: '#', external: false },
+  { title: 'Plataforma de Ciberseguridad Zero Trust', description: 'Implementación de arquitectura Zero Trust con Cloudflare Access, Tunnel y Gateway. Protege aplicaciones internas sin exponer puertos al público.', tag: 'Ciberseguridad', tech: ['Cloudflare Access', 'Tunnel', 'WARP'], url: '#', external: false },
+  { title: 'Chatbot con IA para Soporte TI', description: 'Asistente virtual basado en LLMs que resuelve consultas de soporte técnico de primer nivel. Integrado con base de conocimiento interna usando RAG.', tag: 'IA', tech: ['Workers AI', 'Vectorize', 'TypeScript'], url: '#', external: false },
+  { title: 'Generador de Reportes Automatizado', description: 'Sistema que genera reportes periódicos a partir de múltiples fuentes de datos y los envía automáticamente por email. Programado con Cloudflare Cron Triggers.', tag: 'Automatización', tech: ['Cloudflare Workers', 'Cron Triggers', 'D1'], url: '#', external: false },
+];
+---
+<Layout title="Proyectos | Sergio Briones" description="Proyectos destacados de Sergio Briones — cloud, DevOps, ciberseguridad e IA.">
+  <Header />
+  <section class="section" style="padding-top: 7rem;">
+    <div class="container">
+      <h1 class="section-title">Proyectos</h1>
+      <p class="section-subtitle">Una colección de proyectos en los que he trabajado, incluyendo proyectos propios y colaboraciones externas</p>
+      <div class="projects-grid">
+        {projects.map(p => (
+          <div class="project-card">
+            <span class="project-tag">{p.tag}</span>
+            <h3>{p.title}</h3>
+            <p>{p.description}</p>
+            <div class="blog-tags" style="margin-top: .8rem; margin-bottom: 1rem;">
+              {p.tech.map(t => <span class="blog-tag">{t}</span>)}
+            </div>
+            <div class="project-links">
+              <a href={p.url} target={p.external ? '_blank' : '_self'} rel={p.external ? 'noopener noreferrer' : ''}>
+                {p.external ? '🔗 Ver proyecto externo' : '🔍 Ver detalles'} →
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);">
+        <h3 style="margin-bottom: .5rem;">¿Tienes un proyecto en mente?</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Estoy disponible para colaborar en proyectos nuevos y emocionantes.</p>
+        <a href="/#contacto" class="btn btn-primary">Hablemos →</a>
+      </div>
+    </div>
+  </section>
+  <Footer />
+</Layout>

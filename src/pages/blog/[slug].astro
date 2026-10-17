@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const formatDate = (d: Date) => d.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<Layout title={`${post.data.title} | Blog`} description={post.data.description}>
+  <Header />
+  <article class="section" style="padding-top: 7rem;">
+    <div class="container">
+      <a href="/blog" class="back-link">← Volver al blog</a>
+      <div class="article">
+        <div class="article-header">
+          <h1>{post.data.title}</h1>
+          <div class="article-meta">
+            {formatDate(post.data.pubDate)} · {post.data.author}
+          </div>
+          {post.data.tags.length > 0 && (
+            <div class="blog-tags" style="justify-content: center; margin-top: 1rem;">
+              {post.data.tags.map(t => <span class="blog-tag">{t}</span>)}
+            </div>
+          )}
+        </div>
+        <div class="article-body">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </article>
+  <Footer />
+</Layout>

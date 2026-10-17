@@ -1,0 +1,25 @@
+---
+const links = [
+  { href: '/', label: 'Inicio' },
+  { href: '/#sobre-mi', label: 'Sobre mí' },
+  { href: '/#proyectos', label: 'Proyectos' },
+  { href: '/proyectos', label: 'Todos los proyectos' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/#contacto', label: 'Contacto' },
+];
+const path = Astro.url.pathname;
+---
+<header class="header">
+  <div class="container header-inner">
+    <a href="/" class="logo">
+      <span class="logo-icon">SB</span>
+      Sergio Briones
+    </a>
+    <button class="menu-toggle" aria-label="Menú" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+    <nav class="nav" id="nav">
+      {links.map(l => (
+        <a href={l.href} class={path === l.href ? 'active' : ''}>{l.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
